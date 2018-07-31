@@ -1,0 +1,21 @@
+{
+  "name": "PRESS.one-SDK",
+  "description": "Social Identity / Publish System based on Blockchain.",
+  "version": "0.7.3",
+  "private": true,
+  "homepage": "https://press.one",
+  "scripts": {
+    "start": "node test"
+  },
+  "dependencies": {
+    "chai": "^4.1.2",
+    "ethereumjs-util": "^5.1.3",
+    "js-sha3": "^0.7.0",
+    "keythereum": "^1.0.2",
+    "md5": "^2.2.1",
+    "mocha": "^5.0.2",
+    "secp256k1": "^3.5.0",
+    "supertest": "^3.1.0",
+    "yargs": "^11.0.0"
+  }
+}
