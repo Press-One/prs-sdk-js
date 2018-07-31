@@ -11,7 +11,10 @@ let keyPair    = utility.createKeyPair({dump: true});
 describe('create app', () => {
     it('should return a 200', (done) => {
         const payload = {
-            name : 'Test APP ' + new Date(),
+            name        : 'Test APP ' + new Date(),
+            description : 'This is a testing app.',
+            url         : 'http://xxxx.com',
+            logo        : 'http://xxxx.com/logo.png',
         };
         global.api.post(
             '/api/apps'
@@ -46,7 +49,10 @@ describe('get app information', () => {
 describe('update app', () => {
     it('should return a 200', (done) => {
         const payload = {
-            name : 'Test APP ' + new Date(),
+            name        : 'Test APP ' + new Date(),
+            description : 'This is a testing app.',
+            url         : 'http://xxxx.com',
+            logo        : 'http://xxxx.com/logo.png',
         };
         global.api.post(
             '/api/apps/' + appAddress
