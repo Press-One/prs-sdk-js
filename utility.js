@@ -131,6 +131,11 @@ const signFile = (content, keystore, password) => {
     );
 }
 
+const signImage = (file, privatekey) => {
+    const msghash = jsSha3.keccak256.update(file).toString('hex');
+    return signByMsghash(msghash, privatekey);
+  };
+
 const signFileViaKey = (content, privatekey) => {
     const base64str = getBase64str(content);
     return sign(base64str, privatekey);
@@ -241,6 +246,7 @@ module.exports = {
     getAuthHeader,
     signFile,
     signFileViaKey,
+    signImage,
     signText,
     getAuthSignature,
     rollObject,

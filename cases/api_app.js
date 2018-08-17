@@ -19,10 +19,11 @@ describe('create app', () => {
         global.api.post(
             '/api/apps'
         ).send({payload: payload}).set(
-            utility.getAuthHeader('/apps', payload, user.keystore, user.password)
+            utility.getAuthHeader('/apps', payload, developer.keystore, developer.password)
         ).end((err, res) => {
             res.status.should.equal(200);
             appAddress = res.body && res.body.data && res.body.data.app && res.body.data.app.address;
+            console.log(res.body);
             done();
         });
     });
@@ -36,7 +37,7 @@ describe('get app information', () => {
         global.api.get(
             '/api/apps/' + appAddress
         ).set(
-            utility.getAuthHeader('/apps/' + appAddress, undefined, user.keystore, user.password)
+            utility.getAuthHeader('/apps/' + appAddress, undefined, developer.keystore, developer.password)
         ).set(
             'Accept', 'application/json'
         ).expect(200, done);
@@ -58,7 +59,7 @@ describe('update app', () => {
             '/api/apps/' + appAddress
         ).send({payload: payload}).set(
             utility.getAuthHeader('/apps/' + appAddress,
-            payload, user.keystore, user.password)
+            payload, developer.keystore, developer.password)
         ).expect(200, done);
     });
 });
@@ -73,7 +74,7 @@ describe('delete app', () => {
             '/api/apps/' + appAddress + '/delete'
         ).send({payload: payload}).set(
             utility.getAuthHeader('/apps/' + appAddress + '/delete',
-            payload, user.keystore, user.password)
+            payload, developer.keystore, developer.password)
         ).expect(200, done);
     });
 });
@@ -83,7 +84,7 @@ describe('delete app', () => {
  */
 describe('auth app', () => {
     it('should return a 200', (done) => {
-        const appAdd  = 'db197f667770a18ae038a89d460eddda05734f4c';
+        const appAdd  = 'c609224f9590e60fae1723ad4d612c2db1a41595';
         const key     = keyPair;
         const payload = {
             appAddress  : appAdd,
@@ -108,7 +109,7 @@ describe('auth app', () => {
  */
 describe('deauth app', () => {
     it('should return a 200', (done) => {
-        const appAdd  = 'db197f667770a18ae038a89d460eddda05734f4c';
+        const appAdd  = 'c609224f9590e60fae1723ad4d612c2db1a41595';
         const key     = keyPair;
         const payload = {
             appAddress  : appAdd,
