@@ -22,6 +22,7 @@ fs.writeFileSync(url2, canvas.toBuffer('image/png', {compressionLevel: 3, filter
 
 
 let msghash  = null;
+let imageRid = null;
 
 /**
  * 签名文本文件
@@ -45,7 +46,6 @@ describe('sign file', () => {
         ).attach(
             'file',        url
         ).set('Accept', 'application/json').end((err, res) => {
-            console.log(res.body);
             res.status.should.equal(200);
             msghash = res.body.block.msghash;
             done();
@@ -76,12 +76,68 @@ describe('sign image', () => {
         ).attach(
             'file',        url2
         ).set('Accept', 'application/json').end((err, res) => {
-            console.log(res.body);
+            res.status.should.equal(200);
+            msghash  = res.body.block.msghash;
+            imageRid = res.body.block.rId; 
+            done();
+        });
+        this.timeout(1000 * 200);
+    });
+});
+
+
+/**
+ * 签名图文混排文件
+ */
+describe('sign file contains prs image', () => {
+    it('should return a 200 response', function(done) {
+        let tempFile3 = `../${String(Date.now())}.md`;
+        let url3      = path.join(__dirname, tempFile3);
+        let imageText =  String(Date.now()) + '\n' + `![test](prs://file?rId=${imageRid})`
+        fs.writeFileSync(url3, imageText, 'utf-8');
+        
+        const content = fs.readFileSync(url3, 'utf-8');
+        const sign = utility.signFileViaKey(content, user.privateKey);
+        global.api.post(
+            '/api/filesign'
+        ).field(
+            'sig',         sign.sig
+        ).field(
+            'address',     user.address
+        ).field(
+            'title',       'testing title'
+        ).field(
+            'source',      'Google'
+        ).field(
+            'originUrl',   'https://www.google.com'
+        ).attach(
+            'file',        url3
+        ).set('Accept', 'application/json').end((err, res) => {
             res.status.should.equal(200);
             msghash = res.body.block.msghash;
             done();
         });
         this.timeout(1000 * 200);
+    });
+});
+
+/**
+ * 获取签名文件的基本信息
+ */
+describe('get file by rId', () => {
+    it('should return a 200 response', (done) => {
+        let rIds = [imageRid];
+        global.api.get(
+            `/api/block/txes?rIds=${rIds.join(',')}`
+        )
+        .end((err, res) => {
+            let tx = JSON.parse(res.body.data.txes[0].data)
+            let uuid = tx.uuid;
+            let fileUrl = `${global.fileHost}/${uuid}`
+            console.log(fileUrl);
+            res.status.should.equal(200);
+            done();
+        });
     });
 });
 
