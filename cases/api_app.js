@@ -23,7 +23,6 @@ describe('create app', () => {
         ).end((err, res) => {
             res.status.should.equal(200);
             appAddress = res.body && res.body.data && res.body.data.app && res.body.data.app.address;
-            console.log(res.body);
             done();
         });
     });
@@ -80,7 +79,7 @@ describe('delete app', () => {
 });
 
 /**
- * 创建新密钥，并授权 app 通过此密钥签名文件，发布信息
+ * 创建新密钥，并授权 app，可通过此密钥签名文件，发布信息
  */
 describe('auth app', () => {
     it('should return a 200', (done) => {
