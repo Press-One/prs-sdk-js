@@ -8,6 +8,11 @@ const ethUtil    = require('ethereumjs-util'),
       keythereum = require('keythereum'),
       ec         = new require('elliptic').ec('secp256k1');
 
+const hashPassword = (email, password) =>{
+    const msghash = keccak256(password + email);
+    return msghash;
+}
+
 const jsonApiPackage = (obj, address, privatekey) => {
     const message      = rollObject(obj);
     const signed_obj   = sign( message, privatekey);
@@ -255,4 +260,5 @@ module.exports = {
     sha256,
     randomString,
     createKeyPair,
+    hashPassword,
 };
