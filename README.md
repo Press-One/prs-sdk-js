@@ -1,4 +1,10 @@
-# DApp SDK
+# 关于 PRESSone 项目
+* [PRESSone 官网](https://press.one)
+* [PRESSone 白皮书](https://static.press.one/files/PRS_whitepaper_1_0_1_cn.pdf)
+* [PRESSone 开发者论坛](https://bbs.onedev.club/)
+* [官方SDK 文档及资源](https://github.com/Press-One/Third-Party-APP-SDK)
+
+# 关于 DApp SDK
 
 PRESS.one被设计为基于多种共识基础之上的应用层协议。PRS网络的目标是创建一个去中心的数字内容分发系统。PRESS.one协议帮助开发者连接区块链、各种共识、P2P、云存储等不同的技术，让开发者可以建立自己的去中心应用，这些应用可以在区块链之外保存自己的私有数据，但把需要公开的数据存储在PRS网络上，整个生态系统都可以从这些公开的分享数据中获益。
 
