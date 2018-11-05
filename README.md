@@ -47,7 +47,7 @@ DApp 开发者并不需要从头实现 PRESSone 协议，开发者可以通过 P
 
 * 具体的每个步骤，都在`/cases`目录有实现参考；
 * 所有加密，签名，运算所需要的函数，都在`/utility.js`文件中可以找到参考实现。
-* [开发文档](https://github.com/Press-One/Third-Party-APP-SDK/wiki)
+* [开发文档](https://developer.press.one)
 
 ### Tips
 
