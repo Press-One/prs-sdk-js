@@ -19,7 +19,7 @@ describe('create app', () => {
         global.api.post(
             '/api/apps'
         ).send({payload: payload}).set(
-            utility.getAuthHeader('/apps', payload, developer.keystore, developer.password)
+            utility.getAuthHeaderViaKeystore('/apps', payload, developer.keystore, developer.password)
         ).end((err, res) => {
             res.status.should.equal(200);
             appAddress = res.body && res.body.data && res.body.data.app && res.body.data.app.address;
@@ -36,7 +36,7 @@ describe('get app information', () => {
         global.api.get(
             '/api/apps/' + appAddress
         ).set(
-            utility.getAuthHeader('/apps/' + appAddress, undefined, developer.keystore, developer.password)
+            utility.getAuthHeaderViaKeystore('/apps/' + appAddress, undefined, developer.keystore, developer.password)
         ).set(
             'Accept', 'application/json'
         ).expect(200, done);
@@ -57,7 +57,7 @@ describe('update app', () => {
         global.api.post(
             '/api/apps/' + appAddress
         ).send({payload: payload}).set(
-            utility.getAuthHeader('/apps/' + appAddress,
+            utility.getAuthHeaderViaKeystore('/apps/' + appAddress,
             payload, developer.keystore, developer.password)
         ).expect(200, done);
     });
@@ -72,7 +72,7 @@ describe('delete app', () => {
         global.api.post(
             '/api/apps/' + appAddress + '/delete'
         ).send({payload: payload}).set(
-            utility.getAuthHeader('/apps/' + appAddress + '/delete',
+            utility.getAuthHeaderViaKeystore('/apps/' + appAddress + '/delete',
             payload, developer.keystore, developer.password)
         ).expect(200, done);
     });

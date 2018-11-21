@@ -21,10 +21,14 @@ const jsonApiPackage = (obj, address, privatekey) => {
     return signed_obj;
 }
 
-const getAuthHeader = (path, payload, _keystore, password) => {
+const getAuthHeaderViaKeystore = (path, payload, _keystore, password) => {
     const keystore   = JSON.parse(_keystore);
-    const address    = keystore.address;
     const privatekey = keythereum.recover(password, keystore);
+    return getAuthHeaderViaPrivateKey(path, payload, privatekey);
+}
+
+const getAuthHeaderViaPrivateKey = (path, payload, privatekey) => {
+    const address = keythereum.privateKeyToAddress(privatekey).slice(2);
     const auth       = jsonApiPackage({ path, payload }, address, privatekey);
     return {
         'Content-Type'      : 'application/json',
@@ -248,7 +252,8 @@ let createKeyPair = (options = {}) => {
 };
 
 module.exports = {
-    getAuthHeader,
+    getAuthHeaderViaKeystore,
+    getAuthHeaderViaPrivateKey,
     signFile,
     signFileViaKey,
     signImage,
