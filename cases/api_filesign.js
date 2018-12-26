@@ -44,7 +44,7 @@ it('sign text/markdown file', function (done) {
     .attach('file', markdownFileUrl)
     .set('Accept', 'application/json')
     .end((_err, res) => {
-      console.log(res.body);
+      console.log(JSON.stringify(res.body));
       res.status.should.equal(200);
       const data = JSON.parse(res.body.block.data);
       msghash = data.file_hash;
@@ -75,7 +75,7 @@ it('sign image', function (done) {
     .attach('file', imageFileUrl)
     .set('Accept', 'application/json')
     .end((_err, res) => {
-      console.log(res.body);
+      console.log(JSON.stringify(res.body));
       res.status.should.equal(200);
       const data = JSON.parse(res.body.block.data);
       msghash = data.file_hash;
@@ -112,7 +112,7 @@ it('sign file contains prs image', function (done) {
     .attach('file', mixFileUrl)
     .set('Accept', 'application/json')
     .end((_err, res) => {
-      console.log(res.body);
+      console.log(JSON.stringify(res.body));
       res.status.should.equal(200);
       const data = JSON.parse(res.body.block.data);
       msghash = data.file_hash;
@@ -131,6 +131,7 @@ it('get file by rId', (done) => {
     `/api/block/txes?rIds=${rIds.join(',')}`
   )
     .end((err, res) => {
+      console.log(JSON.stringify(res.body));
       const meta = JSON.parse(res.body.data.txes[0].meta)
       const fileUrl = meta.uri.replace('p1s://', global.fileHost);
       console.log(fileUrl);
@@ -145,7 +146,11 @@ it('get signed file', (done) => {
   global.api.get(
     `/api/filesign/${msghash}`
   )
-    .expect(200, done);
+  .end((_err, res) => {
+    console.log(JSON.stringify(res.body));
+    res.status.should.equal(200);
+    done();
+  });
 });
 
 after(() => {

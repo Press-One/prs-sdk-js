@@ -22,9 +22,7 @@ it('get contract templates', (done) => {
   global.api.get(`/api/contracts/templates?offset=0&limit=5`)
     .set(utility.getAuthHeader(`/contracts/templates?offset=0&limit=5`, undefined, user.address, privateKey))
     .end((_err, res) => {
-      if (res.status === 200) {
-        console.log(JSON.stringify(res.body));
-      }
+      console.log(JSON.stringify(res.body));
       res.status.should.equal(200);
       done();
     });
@@ -53,6 +51,7 @@ License usage2 CNB:0.002 Terms: 这是商业使用条款，允许\\n修改和复
     .send({ payload: payload })
     .set(utility.getAuthHeader(`/contracts`, payload, user.address, privateKey))
     .end((_err, res) => {
+      console.log(JSON.stringify(res.body));
       res.status.should.equal(200);
       contractBlockId = res.body.contract.rId;
       done();
@@ -80,6 +79,7 @@ it('sign text/markdown file', function (done) {
     .attach('file', markdownFileUrl)
     .set('Accept', 'application/json')
     .end((_err, res) => {
+      console.log(JSON.stringify(res.body));
       res.status.should.equal(200);
       fileBlockId = res.body.block.id;
       done();
@@ -106,9 +106,7 @@ it('bind contract to file', function (done) {
     .set(
       utility.getAuthHeader(`/contracts/${contractBlockId}/bind`, data, user.address, privateKey)
     ).end((_err, res) => {
-      if (res.status === 200) {
-        console.log(JSON.stringify(res.body));
-      }
+      console.log(JSON.stringify(res.body));
       res.status.should.equal(200);
       done();
     });
@@ -136,6 +134,7 @@ it('create contract order by Commercial', (done) => {
       )
     )
     .end((_err, res) => {
+      console.log(JSON.stringify(res.body));
       res.status.should.equal(200);
       done()
     });
@@ -158,6 +157,7 @@ it('get contract orders for seller', (done) => {
       )
     )
     .end((_err, res) => {
+      console.log(JSON.stringify(res.body));
       res.status.should.equal(200);
       done();
     });
@@ -166,6 +166,7 @@ it('get contract orders for seller', (done) => {
 it('get contract orders for anonymity', (done) => {
   global.api.get(`/api/contracts/${contractBlockId}/orders?offset=0&limit=5`)
     .end((_err, res) => {
+      console.log(JSON.stringify(res.body));
       res.status.should.equal(200);
       done();
     });
@@ -187,6 +188,7 @@ it('get purchased orders for buyer', (done) => {
       )
     )
     .end((_err, res) => {
+      console.log(JSON.stringify(res.body));
       res.status.should.equal(200);
       done();
     });
@@ -207,6 +209,7 @@ it('get contract by rId for seller', (done) => {
       )
     )
     .end((_err, res) => {
+      console.log(JSON.stringify(res.body));
       res.status.should.equal(200);
       done();
     });
@@ -215,6 +218,7 @@ it('get contract by rId for seller', (done) => {
 it('get contract by rId for anonymity', (done) => {
   global.api.get(`/api/contracts/${contractBlockId}`)
     .end((_err, res) => {
+      console.log(JSON.stringify(res.body));
       res.status.should.equal(200);
       done();
     });
@@ -236,7 +240,7 @@ it('list contracts by seller', (done) => {
       )
     )
     .end((_err, res) => {
-      console.log(res.body);
+      console.log(JSON.stringify(res.body));
       res.status.should.equal(200);
       done();
     });
@@ -258,7 +262,7 @@ it('list contracts by file msghash for seller', (done) => {
       )
     )
     .end((_err, res) => {
-      console.log(res.body);
+      console.log(JSON.stringify(res.body));
       res.status.should.equal(200);
       done();
     });
@@ -276,6 +280,7 @@ it('list contracts by file msghash for buyer', (done) => {
       )
     )
     .end((_err, res) => {
+      console.log(JSON.stringify(res.body));
       res.status.should.equal(200);
       done();
     });

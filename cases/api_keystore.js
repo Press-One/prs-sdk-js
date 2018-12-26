@@ -16,11 +16,10 @@ describe('get keystore', function () {
         passwordHash: utility.hashPassword(user.email, user.password),
       }
     }).set('Accept', 'application/json')
-      .expect(200)
-      .end(function (err, res) {
-        console.log(res.body);
-        res.status.should.equal(200);
-        done();
-      });
+    .end((_err, res) => {
+      console.log(JSON.stringify(res.body));
+      res.status.should.equal(200);
+      done();
+    });
   });
 });
