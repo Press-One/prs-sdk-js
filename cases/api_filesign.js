@@ -123,7 +123,7 @@ it('sign file contains prs image', function (done) {
 });
 
 /**
- * 获取签名文件的基本信息
+ * 获取签名文件的区块信息
  */
 it('get file by rId', (done) => {
   const rIds = [imageRid];
@@ -139,6 +139,7 @@ it('get file by rId', (done) => {
       done();
     });
 });
+
 /**
  * 获取签名文件的基本信息
  */
