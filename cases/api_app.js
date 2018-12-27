@@ -7,7 +7,7 @@ let appAddress = null;
 const keyPair = utility.createKeyPair({ dump: true });
 
 /**
- * 创建第三方 APP
+ * 创建 DAPP
  */
 it('create dapp', function (done) {
   const privateKey = utility.recoverPrivateKey(developer.keystore, developer.password);
@@ -47,11 +47,11 @@ it('get app information', (done) => {
   ).set(
     'Accept', 'application/json'
   )
-  .end((_err, res) => {
-    console.log(JSON.stringify(res.body));
-    res.status.should.equal(200);
-    done();
-  });
+    .end((_err, res) => {
+      console.log(JSON.stringify(res.body));
+      res.status.should.equal(200);
+      done();
+    });
 });
 
 /**
@@ -71,11 +71,11 @@ it('update app', (done) => {
     utility.getAuthHeader('/apps/' + appAddress,
       payload, developer.address, privateKey)
   )
-  .end((_err, res) => {
-    console.log(JSON.stringify(res.body));
-    res.status.should.equal(200);
-    done();
-  });
+    .end((_err, res) => {
+      console.log(JSON.stringify(res.body));
+      res.status.should.equal(200);
+      done();
+    });
 });
 
 /**
@@ -110,25 +110,30 @@ it('auth app', function (done) {
   const appAddress = 'c609224f9590e60fae1723ad4d612c2db1a41595';
   // const key = keyPair;
   const { signature } = utility.signBlockData({
-      app_provider: 'press.one',
-      app_address: appAddress,
-      auth_address: keyPair.address,
-      authorized: true,
-    },
+    app_provider: 'press.one',
+    app_address: appAddress,
+    auth_address: keyPair.address,
+    authorized: true,
+  },
     privateKey
   );
   const payload = {
     appAddress,
     authAddress: keyPair.address,
     authorized: true,
-  };
-  const data = {
-    payload,
-    signature,
+    signature
   };
   global.api
     .post('/api/apps/authenticate')
-    .send(data)
+    .send({ payload })
+    .set(
+      utility.getAuthHeader(
+        '/apps/authenticate',
+        payload,
+        user.address,
+        privateKey
+      )
+    )
     .end((_err, res) => {
       console.log(JSON.stringify(res.body));
       res.status.should.equal(200);
@@ -155,14 +160,19 @@ it('deauth app', function (done) {
     appAddress: appAddress,
     authAddress: keyPair.address,
     authorized: false,
-  };
-  const data = {
-    payload,
-    signature,
+    signature
   };
   global.api
     .post('/api/apps/deauthenticate')
-    .send(data)
+    .send({payload})
+    .set(
+      utility.getAuthHeader(
+        '/apps/deauthenticate',
+        payload,
+        user.address,
+        privateKey
+      )
+    )
     .end((_err, res) => {
       console.log(JSON.stringify(res.body));
       res.status.should.equal(200);
