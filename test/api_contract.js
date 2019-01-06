@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const utility = require('../utility');
+const utility = require('../lib/utility');
 
 const { user, buyer } = require('../fixtures');
 
@@ -20,7 +20,7 @@ fs.writeFileSync(markdownFileUrl, String(Date.now()), 'utf-8');
 it('get contract templates', (done) => {
   const privateKey = utility.recoverPrivateKey(user.keystore, user.password);
   global.api.get(`/api/contracts/templates?offset=0&limit=5`)
-    .set(utility.getAuthHeader(`/contracts/templates?offset=0&limit=5`, undefined, user.address, privateKey))
+    .set(utility.getAuthHeader(`/contracts/templates?offset=0&limit=5`, undefined, privateKey))
     .end((_err, res) => {
       console.log(JSON.stringify(res.body));
       res.status.should.equal(200);
@@ -49,7 +49,7 @@ License usage2 CNB:0.002 Terms: 这是商业使用条款，允许\\n修改和复
   };
   global.api.post(`/api/contracts`)
     .send({ payload: payload })
-    .set(utility.getAuthHeader(`/contracts`, payload, user.address, privateKey))
+    .set(utility.getAuthHeader(`/contracts`, payload, privateKey))
     .end((_err, res) => {
       console.log(JSON.stringify(res.body));
       res.status.should.equal(200);
@@ -104,7 +104,7 @@ it('bind contract to file', function (done) {
   global.api.post(`/api/contracts/${contractBlockId}/bind`)
     .send({ payload: data })
     .set(
-      utility.getAuthHeader(`/contracts/${contractBlockId}/bind`, data, user.address, privateKey)
+      utility.getAuthHeader(`/contracts/${contractBlockId}/bind`, data, privateKey)
     ).end((_err, res) => {
       console.log(JSON.stringify(res.body));
       res.status.should.equal(200);
@@ -129,7 +129,6 @@ it('create contract order by Commercial', (done) => {
       utility.getAuthHeader(
         `/users/${buyer.address}/orders`,
         payload,
-        buyer.address,
         privateKey
       )
     )
@@ -152,7 +151,6 @@ it('get contract orders for seller', (done) => {
       utility.getAuthHeader(
         `/contracts/${contractBlockId}/orders?offset=0&limit=5`,
         undefined,
-        user.address,
         privateKey
       )
     )
@@ -183,7 +181,6 @@ it('get purchased orders for buyer', (done) => {
       utility.getAuthHeader(
         `/users/${buyer.address}/orders?offset=0&limit=5`,
         undefined,
-        buyer.address,
         privateKey
       )
     )
@@ -204,7 +201,6 @@ it('get contract by rId for seller', (done) => {
       utility.getAuthHeader(
         `/contracts/${contractBlockId}`,
         undefined,
-        user.address,
         privateKey
       )
     )
@@ -235,7 +231,6 @@ it('list contracts by seller', (done) => {
       utility.getAuthHeader(
         `/contracts?offset=0&limit=5`,
         undefined,
-        user.address,
         privateKey
       )
     )
@@ -257,7 +252,6 @@ it('list contracts by file msghash for seller', (done) => {
       utility.getAuthHeader(
         `/filesign/${fileHash}`,
         undefined,
-        user.address,
         privateKey
       )
     )
@@ -275,7 +269,6 @@ it('list contracts by file msghash for buyer', (done) => {
       utility.getAuthHeader(
         `/filesign/${fileHash}`,
         undefined,
-        buyer.address,
         privateKey
       )
     )
@@ -284,4 +277,8 @@ it('list contracts by file msghash for buyer', (done) => {
       res.status.should.equal(200);
       done();
     });
+});
+
+after(() => {
+  fs.unlinkSync(markdownFileUrl);
 });

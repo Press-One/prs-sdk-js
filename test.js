@@ -3,7 +3,7 @@
 let Mocha     = require('mocha'),
     argv      = require('yargs').argv,
     mocha     = new Mocha({ grep: argv.grep || '', timeout: 10000 }),
-    casePath  = __dirname + '/cases/';
+    casePath  = __dirname + '/test/';
 
 global.should  = require('chai').should();
 global.expect  = require('chai').expect;

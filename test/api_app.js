@@ -1,6 +1,6 @@
 'use strict';
 
-const utility = require('../utility');
+const utility = require('../lib/utility');
 const { developer, user } = require('../fixtures');
 
 let appAddress = null;
@@ -21,7 +21,7 @@ it('create dapp', function (done) {
     .post('/api/apps')
     .send({ payload: payload })
     .set(
-      utility.getAuthHeader('/apps', payload, developer.address, privateKey)
+      utility.getAuthHeader('/apps', payload, privateKey)
     )
     .end(function (err, res) {
       console.log(JSON.stringify(res.body));
@@ -43,7 +43,7 @@ it('get app information', (done) => {
   global.api.get(
     '/api/apps/' + appAddress
   ).set(
-    utility.getAuthHeader('/apps/' + appAddress, undefined, developer.address, privateKey)
+    utility.getAuthHeader('/apps/' + appAddress, undefined, privateKey)
   ).set(
     'Accept', 'application/json'
   )
@@ -69,7 +69,7 @@ it('update app', (done) => {
     '/api/apps/' + appAddress
   ).send({ payload: payload }).set(
     utility.getAuthHeader('/apps/' + appAddress,
-      payload, developer.address, privateKey)
+      payload, privateKey)
   )
     .end((_err, res) => {
       console.log(JSON.stringify(res.body));
@@ -91,7 +91,6 @@ it('delete app', function (done) {
       utility.getAuthHeader(
         '/apps/' + appAddress + '/delete',
         payload,
-        developer.address,
         privateKey
       )
     ).end((_err, res) => {
@@ -130,7 +129,6 @@ it('auth app', function (done) {
       utility.getAuthHeader(
         '/apps/authenticate',
         payload,
-        user.address,
         privateKey
       )
     )
@@ -169,7 +167,6 @@ it('deauth app', function (done) {
       utility.getAuthHeader(
         '/apps/deauthenticate',
         payload,
-        user.address,
         privateKey
       )
     )

@@ -2,26 +2,38 @@
 
 const fs = require('fs');
 const path = require('path');
-const utility = require('../utility');
+const utility = require('../lib/utility');
 const { user } = require('../fixtures');
 
-const markdownFile = `../${String(Date.now())}.md`;
-const markdownFileUrl = path.join(__dirname, markdownFile);
-fs.writeFileSync(markdownFileUrl, String(Date.now()), 'utf-8');
 
-const imageFile = `../${String(Date.now())}.png`;
-const imageFileUrl = path.join(__dirname, imageFile);
-
-const { createCanvas, loadImage } = require('canvas')
-const canvas = createCanvas(1000, 1000, 'png')
-const ctx = canvas.getContext('2d')
-ctx.font = '30px Impact'
-ctx.rotate(0.1)
-ctx.fillText(String(Date.now()), 50, 100)
-fs.writeFileSync(imageFileUrl, canvas.toBuffer('image/png', { compressionLevel: 3, filters: canvas.PNG_FILTER_NONE }));
+let markdownFileUrl = null;
+let imageFileUrl = null;
 
 let msghash = null;
 let imageRid = null;
+
+before(function () {
+  const markdownFile = `../${String(Date.now())}.md`;
+  markdownFileUrl = path.join(__dirname, markdownFile);
+  fs.writeFileSync(markdownFileUrl, String(Date.now()), 'utf-8');
+
+  const imageFile = `../${String(Date.now())}.png`;
+  imageFileUrl = path.join(__dirname, imageFile);
+
+  const { createCanvas, loadImage } = require('canvas')
+  const canvas = createCanvas(1000, 1000, 'png')
+  const ctx = canvas.getContext('2d')
+  ctx.font = '30px Impact'
+  ctx.rotate(0.1)
+  ctx.fillText(String(Date.now()), 50, 100)
+  fs.writeFileSync(imageFileUrl, canvas.toBuffer('image/png', { compressionLevel: 3, filters: canvas.PNG_FILTER_NONE }));
+});
+
+after(function () {
+  // runs after all tests in this block
+  fs.unlinkSync(markdownFileUrl)
+  fs.unlinkSync(imageFileUrl);
+});
 
 /**
  * 签名文本文件
@@ -117,6 +129,8 @@ it('sign file contains prs image', function (done) {
       const data = JSON.parse(res.body.block.data);
       msghash = data.file_hash;
       msghash.should.equal(fileHash);
+
+      fs.unlinkSync(mixFileUrl);
       done();
     });
   this.timeout(1000 * 200);
@@ -147,13 +161,9 @@ it('get signed file', (done) => {
   global.api.get(
     `/api/filesign/${msghash}`
   )
-  .end((_err, res) => {
-    console.log(JSON.stringify(res.body));
-    res.status.should.equal(200);
-    done();
-  });
-});
-
-after(() => {
-  fs.unlinkSync(markdownFileUrl);
+    .end((_err, res) => {
+      console.log(JSON.stringify(res.body));
+      res.status.should.equal(200);
+      done();
+    });
 });

@@ -1,6 +1,6 @@
 'use strict';
 
-const utility = require('../utility');
+const utility = require('../lib/utility');
 const { user } = require('../fixtures');
 
 /**
