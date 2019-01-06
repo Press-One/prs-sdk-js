@@ -2,8 +2,9 @@
 
 const assert = require('assert');
 const { developer, user, buyer } = require('../fixtures');
-const P1 = require('../lib')({ env: 'dev' });
-const utility = require('../lib/utility');
+const prs = require('../lib');
+const P1 = prs({ env: 'dev' });
+const utility = prs.utility;
 const fs = require('fs');
 const path = require('path');
 
