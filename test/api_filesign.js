@@ -147,7 +147,7 @@ it('get file by rId', (done) => {
     .end((err, res) => {
       console.log(JSON.stringify(res.body));
       const meta = JSON.parse(res.body.data.txes[0].meta)
-      const fileUrl = meta.uri.replace('p1s://', global.fileHost);
+      const fileUrl = meta.uris[0].replace('p1s://', global.fileHost);
       console.log(fileUrl);
       res.status.should.equal(200);
       done();
