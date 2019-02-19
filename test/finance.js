@@ -2,16 +2,18 @@
 
 const assert = require('assert');
 const { user, developer } = require('../fixtures');
-const prs = require('../lib/prs');
-prs.setEnv('dev');
-prs.setDebug(true);
+const PRS = require('../lib/prs');
+PRS.config({
+  env: 'env',
+  debug: true
+});
 
 describe('Finance', function () {
 
   it('get wallet', async function () {
     try {
-      const privateKey = prs.utility.recoverPrivateKey(user.keystore, user.password);
-      const res = await prs.Finance.getWallet({ privateKey });
+      const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
+      const res = await PRS.Finance.getWallet({ privateKey });
       should.exist(res.body);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
@@ -20,8 +22,8 @@ describe('Finance', function () {
 
   it('get transactions', async function () {
     try {
-      const privateKey = prs.utility.recoverPrivateKey(user.keystore, user.password);
-      const res = await prs.Finance.getTransactions({ privateKey });
+      const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
+      const res = await PRS.Finance.getTransactions({ privateKey });
       should.exist(res.body);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
@@ -30,8 +32,8 @@ describe('Finance', function () {
 
   it('deposit', async function () {
     try {
-      const privateKey = prs.utility.recoverPrivateKey(user.keystore, user.password);
-      const res = await prs.Finance.deposit(1, { privateKey });
+      const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
+      const res = await PRS.Finance.deposit(1, { privateKey });
       should.exist(res.body);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
@@ -40,8 +42,8 @@ describe('Finance', function () {
 
   it('withdraw', async function () {
     try {
-      const privateKey = prs.utility.recoverPrivateKey(user.keystore, user.password);
-      const res = await prs.Finance.withdraw(1, { privateKey });
+      const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
+      const res = await PRS.Finance.withdraw(1, { privateKey });
       should.exist(res.body);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));

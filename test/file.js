@@ -2,9 +2,11 @@
 
 const assert = require('assert');
 const { user, developer } = require('../fixtures');
-const prs = require('../lib/prs');
-prs.setEnv('dev');
-prs.setDebug(true);
+const PRS = require('../lib/prs');
+PRS.config({
+  env: 'env',
+  debug: true
+});
 
 
 const fs = require('fs');
@@ -46,10 +48,10 @@ describe('File', function () {
   it('sign text/markdown file', async function () {
     this.timeout(1000 * 200);
     try {
-      const privateKey = prs.utility.recoverPrivateKey(user.keystore, user.password);
+      const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
       let authOpts = { privateKey };
       const content = fs.readFileSync(markdownFileUrl);
-      const res = await prs.File.signFile({
+      const res = await PRS.File.signFile({
         file: content,
         filename: 'xxx.md',
         title: 'xxx'
@@ -65,10 +67,10 @@ describe('File', function () {
   it('sign image file', async function () {
     this.timeout(1000 * 200);
     try {
-      const privateKey = prs.utility.recoverPrivateKey(user.keystore, user.password);
+      const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
       let authOpts = { privateKey };
       const content = fs.readFileSync(imageFileUrl);
-      const res = await prs.File.signFile({
+      const res = await PRS.File.signFile({
         file: content,
         filename: 'xxx.png',
         title: 'xxx'
@@ -81,7 +83,7 @@ describe('File', function () {
 
   it('get file by rId', async function () {
     try {
-      const res = await prs.File.fileByRId(fileRId);
+      const res = await PRS.File.fileByRId(fileRId);
       res.status.should.equal(200);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
@@ -90,7 +92,7 @@ describe('File', function () {
 
   it('get file by msghash', async function () {
     try {
-      const res = await prs.File.fileByMsghash(fileHash);
+      const res = await PRS.File.fileByMsghash(fileHash);
       res.status.should.equal(200);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
@@ -99,8 +101,8 @@ describe('File', function () {
 
   it('reward with comment', async function () {
     try {
-      const privateKey = prs.utility.recoverPrivateKey(developer.keystore, developer.password);
-      const res = await prs.File.reward(fileRId, 1, 'hello', { privateKey });
+      const privateKey = PRS.utility.recoverPrivateKey(developer.keystore, developer.password);
+      const res = await PRS.File.reward(fileRId, 1, 'hello', { privateKey });
       res.status.should.equal(200);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
@@ -109,8 +111,8 @@ describe('File', function () {
 
   it('reward without comment', async function () {
     try {
-      const privateKey = prs.utility.recoverPrivateKey(developer.keystore, developer.password);
-      const res = await prs.File.reward(fileRId, 1, { privateKey });
+      const privateKey = PRS.utility.recoverPrivateKey(developer.keystore, developer.password);
+      const res = await PRS.File.reward(fileRId, 1, { privateKey });
       res.status.should.equal(200);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
