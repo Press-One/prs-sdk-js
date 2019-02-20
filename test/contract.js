@@ -57,9 +57,9 @@ License usage2 CNB:0.002 Terms: 这是商业使用条款，允许\\n修改和复
     try {
       const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
       let authOpts = { privateKey };
-      const content = fs.readFileSync(markdownFileUrl);
-      const res = await PRS.File.signFile({
-        file: content,
+      const stream = fs.createReadStream(markdownFileUrl);
+      const res = await PRS.File.signFileByStream({
+        stream: stream,
         filename: 'xxx.md',
         title: 'xxx'
       }, authOpts);

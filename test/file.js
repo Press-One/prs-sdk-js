@@ -18,14 +18,18 @@ let fileRId = null;
 let contractRId = null;
 
 let markdownFileUrl = null;
+let markdownFileUrl2 = null;
 let imageFileUrl = null;
 
 let newKeyPair = null;
 
 before(function () {
   const markdownFile = `../${String(Date.now())}.md`;
+  const markdownFile2 = `../${String(Date.now()) + 'new'}.md`;
   markdownFileUrl = path.join(__dirname, markdownFile);
   fs.writeFileSync(markdownFileUrl, String(Date.now()), 'utf-8');
+  markdownFileUrl2 = path.join(__dirname, markdownFile2);
+  fs.writeFileSync(markdownFileUrl2, String(Date.now()) + 'new', 'utf-8');
 
   const imageFile = `../${String(Date.now())}.png`;
   imageFileUrl = path.join(__dirname, imageFile);
@@ -41,19 +45,39 @@ before(function () {
 
 after(function () {
   fs.unlinkSync(markdownFileUrl)
+  fs.unlinkSync(markdownFileUrl2)
   fs.unlinkSync(imageFileUrl);
 });
 
 describe('File', function () {
-  it('sign text/markdown file', async function () {
+  it('sign text/markdown file by buffer', async function () {
     this.timeout(1000 * 200);
     try {
       const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
       let authOpts = { privateKey };
-      const content = fs.readFileSync(markdownFileUrl);
-      const res = await PRS.File.signFile({
-        file: content,
-        filename: 'xxx.md',
+      const buffer = fs.readFileSync(markdownFileUrl);
+      const res = await PRS.File.signFileByBuffer({
+        buffer: buffer,
+        filename: 'text.md',
+        title: 'xxx'
+      }, authOpts);
+      res.status.should.equal(200);
+      fileHash = res.body.cache.msghash;
+      fileRId = res.body.cache.rId;
+    } catch (err) {
+      assert.fail(JSON.stringify(err.response));
+    }
+  });
+
+  it('sign text/markdown file by readable stream', async function () {
+    this.timeout(1000 * 200);
+    try {
+      const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
+      let authOpts = { privateKey };
+      const stream = fs.createReadStream(markdownFileUrl2);
+      const res = await PRS.File.signFileByStream({
+        stream: stream,
+        filename: 'text.md',
         title: 'xxx'
       }, authOpts);
       res.status.should.equal(200);
@@ -69,9 +93,9 @@ describe('File', function () {
     try {
       const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
       let authOpts = { privateKey };
-      const content = fs.readFileSync(imageFileUrl);
-      const res = await PRS.File.signFile({
-        file: content,
+      const stream = fs.createReadStream(imageFileUrl);
+      const res = await PRS.File.signFileByStream({
+        stream: stream,
         filename: 'xxx.png',
         title: 'xxx'
       }, authOpts);
