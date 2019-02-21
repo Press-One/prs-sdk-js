@@ -3,7 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const assert = require('assert');
-const { user, buyer } = require('../fixtures');
+const { user, buyer, authUser } = require('../fixtures');
 const PRS = require('../lib/prs');
 PRS.config({
   env: 'env',
@@ -35,15 +35,15 @@ describe('Contracts', function () {
   });
 
   it('create contract', async function () {
+    this.timeout(1000 * 200);
     try {
-      const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
       const code = `PRSC Ver 0.1
 Name 购买授权
 Desc 这是一个\\n测试合约
-Receiver ${user.address}
+Receiver ${authUser.address}
 License usage1 CNB:0.001 Terms: 这是个人使用条款，禁止\\n商业应用。
 License usage2 CNB:0.002 Terms: 这是商业使用条款，允许\\n修改和复制。`;
-      let authOpts = { privateKey };
+      let authOpts = { token: authUser.token };
       const res = await PRS.Contract.create(code, authOpts);
       contractRId = res.body.contract.rId;
       should.exist(contractRId);
@@ -55,14 +55,10 @@ License usage2 CNB:0.002 Terms: 这是商业使用条款，允许\\n修改和复
   it('sign text/markdown file', async function () {
     this.timeout(1000 * 200);
     try {
-      const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
-      let authOpts = { privateKey };
+      let authOpts = { token: authUser.token };
       const stream = fs.createReadStream(markdownFileUrl);
-      const res = await PRS.File.signFileByStream({
-        stream: stream,
-        filename: 'xxx.md',
-        title: 'xxx'
-      }, authOpts);
+      let data = { stream: stream, filename: 'xxx.md', title: 'xxx' }
+      const res = await PRS.File.signFileByStream(data, authOpts);
       fileRId = res.body.cache.rId;
       should.exist(fileRId);
     } catch (err) {
@@ -72,9 +68,8 @@ License usage2 CNB:0.002 Terms: 这是商业使用条款，允许\\n修改和复
 
   it('bind contract', async function () {
     try {
-      const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
-      let authOpts = { privateKey };
-      const res = await PRS.Contract.bind(contractRId, fileRId, user.address, authOpts);
+      let authOpts = { token: authUser.token };
+      const res = await PRS.Contract.bind(contractRId, fileRId, authUser.address, authOpts);
       res.status.should.equal(200);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
@@ -93,8 +88,8 @@ License usage2 CNB:0.002 Terms: 这是商业使用条款，允许\\n修改和复
 
   it('get contracts', async function () {
     try {
-      const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
-      const res = await PRS.Contract.getContracts({ privateKey }, {offset: 0, limit: 1});
+      let authOpts = { token: authUser.token };
+      const res = await PRS.Contract.getContracts(authOpts, { offset: 0, limit: 1 });
       res.status.should.equal(200);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
@@ -122,7 +117,7 @@ License usage2 CNB:0.002 Terms: 这是商业使用条款，允许\\n修改和复
 
   it('get purchased orders', async function () {
     try {
-      const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
+      const privateKey = PRS.utility.recoverPrivateKey(buyer.keystore, buyer.password);
       const res = await PRS.Contract.getPurchasedOrders({ privateKey }, { offset: 0, limit: 1 });
       res.status.should.equal(200);
     } catch (err) {
