@@ -103,6 +103,16 @@ describe('DApp', function () {
     }
   });
 
+  it('get web auth url', async function () {
+    try {
+      const url = PRS.DApp.getAuthorizeUrl(appAddress);
+      console.log(url);
+      should.exist(url);
+    } catch (err) {
+      assert.fail(JSON.stringify(err.response));
+    }
+  });
+
   it('authenticate', async function () {
     try {
       const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
