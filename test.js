@@ -7,7 +7,6 @@ let Mocha     = require('mocha'),
 
 global.should  = require('chai').should();
 global.expect  = require('chai').expect;
-global.api     = require('supertest')(`https://stage.press.one`);
 
 global.fileHost = 'https://storage.googleapis.com/pressone/';
 

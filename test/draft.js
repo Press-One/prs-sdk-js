@@ -47,7 +47,7 @@ describe('Draft', function () {
   it('get draft by id', async function () {
     try {
       const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
-      const res = await PRS.Draft.getDraft(draftId, { privateKey });
+      const res = await PRS.Draft.getById(draftId, { privateKey });
       res.status.should.equal(200);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
@@ -57,7 +57,7 @@ describe('Draft', function () {
   it('get drafts', async function () {
     try {
       const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
-      const res = await PRS.Draft.list({ privateKey });
+      const res = await PRS.Draft.getDrafts({ privateKey });
       res.status.should.equal(200);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));

@@ -58,7 +58,7 @@ License usage2 CNB:0.002 Terms: 这是商业使用条款，允许\\n修改和复
       let authOpts = { token: authUser.token };
       const stream = fs.createReadStream(markdownFileUrl);
       let data = { stream: stream, filename: 'xxx.md', title: 'xxx' }
-      const res = await PRS.File.signFileByStream(data, authOpts);
+      const res = await PRS.File.signByStream(data, authOpts);
       fileRId = res.body.cache.rId;
       should.exist(fileRId);
     } catch (err) {
@@ -78,7 +78,7 @@ License usage2 CNB:0.002 Terms: 这是商业使用条款，允许\\n修改和复
 
   it('get contract', async function () {
     try {
-      const res = await PRS.Contract.getContract(contractRId);
+      const res = await PRS.Contract.getByRId(contractRId);
       res.status.should.equal(200);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));

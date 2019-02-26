@@ -1,7 +1,7 @@
 {
   "name": "prs-sdk",
   "description": "Social Identity / Publish System based on Blockchain.",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "homepage": "https://press.one",
   "main": "./lib/index.js",
   "author": "PRESS.one",

@@ -56,7 +56,7 @@ describe('File', function () {
       const stream = fs.createReadStream(markdownFileUrl);
       let data = { stream: stream, filename: 'text.md', title: 'xxx' };
       let authOpts = { token: authUser.token };
-      const res = await PRS.File.signFileByStream(data, authOpts);
+      const res = await PRS.File.signByStream(data, authOpts);
       res.status.should.equal(200);
       fileHash = res.body.cache.msghash;
       fileRId = res.body.cache.rId;
@@ -72,7 +72,7 @@ describe('File', function () {
       const stream = fs.createReadStream(markdownFileUrl2);
       let data = { stream: stream, filename: 'text.md', title: 'xxx' };
       let authOpts = { privateKey };
-      const res = await PRS.File.signFileByStream(data, authOpts);
+      const res = await PRS.File.signByStream(data, authOpts);
       res.status.should.equal(200);
       fileHash = res.body.cache.msghash;
       fileRId = res.body.cache.rId;
@@ -87,7 +87,7 @@ describe('File', function () {
       let authOpts = { token: authUser.token };
       const stream = fs.createReadStream(imageFileUrl);
       let data = { stream: stream, filename: 'xxx.png', title: 'xxx' };
-      const res = await PRS.File.signFileByStream(data, authOpts);
+      const res = await PRS.File.signByStream(data, authOpts);
       res.status.should.equal(200);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
@@ -96,7 +96,7 @@ describe('File', function () {
 
   it('get file by rId', async function () {
     try {
-      const res = await PRS.File.fileByRId(fileRId);
+      const res = await PRS.File.getByRId(fileRId);
       res.status.should.equal(200);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
@@ -105,7 +105,7 @@ describe('File', function () {
 
   it('get file by msghash', async function () {
     try {
-      const res = await PRS.File.fileByMsghash(fileHash);
+      const res = await PRS.File.getByMsghash(fileHash);
       res.status.should.equal(200);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
