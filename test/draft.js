@@ -3,24 +3,19 @@
 const assert = require('assert');
 const { user, developer } = require('../fixtures');
 const PRS = require('../lib/prs');
-PRS.config({
-  env: 'env',
-  debug: true
-});
+const client = new PRS({ env: 'env', debug: true, privateKey: PRS.utility.recoverPrivateKey(user.keystore, user.password), address: user.address });
 
 let draftId = null;
 
 describe('Draft', function () {
   it('create draft', async function () {
     try {
-      const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
-      let authOpts = { privateKey };
       let draft = {
         title: `draft title ${String(Date.now())}`,
         content: `draft content ${String(Date.now())}`,
         mimeType: 'text/plain'
       }
-      const res = await PRS.Draft.create(draft, authOpts);
+      const res = await client.draft.create(draft);
       res.status.should.equal(200);
       draftId = res.body.draftId;
     } catch (err) {
@@ -30,14 +25,12 @@ describe('Draft', function () {
 
   it('update draft', async function () {
     try {
-      const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
-      let authOpts = { privateKey };
       let draft = {
         title: `draft update title ${String(Date.now())}`,
         content: `draft update content ${String(Date.now())}`,
         mimeType: 'text/plain'
       }
-      const res = await PRS.Draft.update(draftId, draft, authOpts);
+      const res = await client.draft.update(draftId, draft);
       res.status.should.equal(200);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
@@ -46,8 +39,7 @@ describe('Draft', function () {
 
   it('get draft by id', async function () {
     try {
-      const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
-      const res = await PRS.Draft.getById(draftId, { privateKey });
+      const res = await client.draft.getById(draftId);
       res.status.should.equal(200);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
@@ -56,8 +48,7 @@ describe('Draft', function () {
 
   it('get drafts', async function () {
     try {
-      const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
-      const res = await PRS.Draft.getDrafts({ privateKey });
+      const res = await client.draft.getDrafts();
       res.status.should.equal(200);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
@@ -66,8 +57,7 @@ describe('Draft', function () {
 
   it('delete draft', async function () {
     try {
-      const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
-      const res = await PRS.Draft.delete(draftId, { privateKey });
+      const res = await client.draft.delete(draftId);
       res.status.should.equal(200);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));

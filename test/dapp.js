@@ -3,20 +3,19 @@
 const assert = require('assert');
 const { user, developer } = require('../fixtures');
 const PRS = require('../lib/prs');
-PRS.config({
-  env: 'env',
-  debug: true
-});
+const client = new PRS({ env: 'env', debug: true, privateKey: PRS.utility.recoverPrivateKey(developer.keystore, developer.password), address: developer.address});
+
 
 let appAddress = null;
 let appPrivateKey = null;
 let keyPair = PRS.utility.createKeyPair({ dump: true });
+let code = null;
 
 describe('DApp', function () {
+  
   it('check name is exists', async function () {
     try {
-      const privateKey = PRS.utility.recoverPrivateKey(developer.keystore, developer.password);
-      const res = await PRS.DApp.isNameExist('test app', { privateKey });
+      const res = await client.dapp.isNameExist('test app');
       res.status.should.equal(200);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
@@ -25,14 +24,13 @@ describe('DApp', function () {
 
   it('create dapp', async function () {
     try {
-      const privateKey = PRS.utility.recoverPrivateKey(developer.keystore, developer.password);
       const dapp = {
         name: 'Test APP ' + new Date(),
         description: 'This is a testing app.',
         url: 'http://xxxx.com',
-        redirectUrl: 'http://xxxx.com/auth',
+        redirectUrl: 'http://press.one/auth',
       }; 
-      const res = await PRS.DApp.create(dapp, { privateKey });
+      const res = await client.dapp.create(dapp);
       appAddress = res.body.address;
       should.exist(appAddress);
     } catch (err) {
@@ -42,14 +40,13 @@ describe('DApp', function () {
 
   it('update dapp', async function () {
     try {
-      const privateKey = PRS.utility.recoverPrivateKey(developer.keystore, developer.password);
       const dapp = {
         name: 'Test APP ' + new Date(),
         description: 'update dapp',
         url: 'http://xxxx.com',
         redirectUrl: 'http://xxxx.com/auth',
       }; 
-      const res = await PRS.DApp.update(appAddress, dapp, { privateKey });
+      const res = await client.dapp.update(appAddress, dapp);
       appAddress = res.body.address;
       should.exist(appAddress);
     } catch (err) {
@@ -59,8 +56,7 @@ describe('DApp', function () {
 
   it('delete dapp', async function () {
     try {
-      const privateKey = PRS.utility.recoverPrivateKey(developer.keystore, developer.password);
-      const res = await PRS.DApp.delete(appAddress, { privateKey });
+      const res = await client.dapp.delete(appAddress);
       res.status.should.equal(200);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
@@ -69,16 +65,15 @@ describe('DApp', function () {
 
   it('create dapp', async function () {
     try {
-      const privateKey = PRS.utility.recoverPrivateKey(developer.keystore, developer.password);
       const dapp = {
         name: 'Test APP ' + new Date(),
         description: 'This is a testing app.',
-        url: 'http://xxxx.com',
-        redirectUrl: 'http://xxxx.com/auth',
+        url: 'http://press.one/auth',
+        redirectUrl: 'http://press.one/auth',
       }; 
-      const res = await PRS.DApp.create(dapp, { privateKey });
+      const res = await client.dapp.create(dapp);
+      console.log(res.body);
       appAddress = res.body.address;
-      appPrivateKey = res.body.privateKey;
       should.exist(appAddress);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
@@ -87,8 +82,8 @@ describe('DApp', function () {
 
   it('get dapp', async function () {
     try {
-      const privateKey = PRS.utility.recoverPrivateKey(developer.keystore, developer.password);
-      const res = await PRS.DApp.getByAddress(appAddress, { privateKey });
+      const res = await client.dapp.getByAddress(appAddress);
+      appPrivateKey = res.body.privateKey;
       res.status.should.equal(200);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
@@ -97,8 +92,7 @@ describe('DApp', function () {
 
   it('get dapps', async function () {
     try {
-      const privateKey = PRS.utility.recoverPrivateKey(developer.keystore, developer.password);
-      const res = await PRS.DApp.getDApps({ privateKey });
+      const res = await client.dapp.getDApps();
       res.status.should.equal(200);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
@@ -107,7 +101,7 @@ describe('DApp', function () {
 
   it('get web auth url', async function () {
     try {
-      const url = PRS.DApp.getAuthorizeUrl(appAddress);
+      const url = client.dapp.getAuthorizeUrl(appAddress);
       console.log(url);
       should.exist(url);
     } catch (err) {
@@ -115,20 +109,30 @@ describe('DApp', function () {
     }
   });
 
-  // it('auth by code', async function () {
-  //   try {
-  //     const privateKey = PRS.utility.recoverPrivateKey(developer.keystore, developer.password);
-  //     const res = await PRS.DApp.authByCode('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTExOTU5MTUsImp0aSI6Ijg5M2NiMjAwLTNiNTQtNDYzNC1hODNlLWU3ZmJmNzQ3YjVjNiIsImRhdGEiOnsidXNlckFkZHJlc3MiOiJjYjdiNzUxMDNjNzMzY2M1NzQzYTM5MGZhZjdiZGVkYzYxNzg2ZTI5IiwiYXBwQWRkcmVzcyI6IjZiMTZjOTU2ZDk2M2UyYzM4ZTA3ZDQ5YWYzN2I2NmExZGU0OTBhOTciLCJ0eXBlIjoicGhvbmUifSwicHJvdmlkZXIiOiJwcmVzc29uZSIsImV4cCI6MTU1MTQ1NTExNX0.KQeimVWpEnTs-8FyvDYh-mppG1_kMKiPGZOf8mY3pfA', '6b16c956d963e2c38e07d49af37b66a1de490a97', { privateKey: "8f8aa65494a9880130842fcec4208ce9ae6667d38422c36e832564408bc1fad5" });
-  //     res.status.should.equal(200);
-  //   } catch (err) {
-  //     assert.fail(JSON.stringify(err.response));
-  //   }
-  // });
+  it('mock web auth', async function () {
+    try {
+      const userClient = new PRS({ env: 'env', debug: true, privateKey: PRS.utility.recoverPrivateKey(user.keystore, user.password), address: user.address});
+      const res = await userClient.dapp.webAuthorize(appAddress);
+      code = res.body.code;
+      res.status.should.equal(200);
+    } catch (err) {
+      assert.fail(JSON.stringify(err.response));
+    }
+  });
+  
+  it('auth by code', async function () {
+    try {
+      const res = await client.dapp.authByCode(code, appAddress, appPrivateKey);
+      res.status.should.equal(200);
+    } catch (err) {
+      assert.fail(JSON.stringify(err.response));
+    }
+  });
 
   it('authenticate', async function () {
     try {
-      const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
-      const res = await PRS.DApp.authenticate(appAddress, keyPair.address, { privateKey });
+      const userClient = new PRS({ env: 'env', debug: true, privateKey: PRS.utility.recoverPrivateKey(user.keystore, user.password), address: user.address});
+      const res = await userClient.dapp.authenticate(appAddress, keyPair.address);
       res.status.should.equal(200);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
@@ -138,12 +142,11 @@ describe('DApp', function () {
 
   it('deauthenticate', async function () {
     try {
-      const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
-      const res = await PRS.DApp.deauthenticate(appAddress, keyPair.address, { privateKey });
+      const userClient = new PRS({ env: 'env', debug: true, privateKey: PRS.utility.recoverPrivateKey(user.keystore, user.password), address: user.address});
+      const res = await userClient.dapp.deauthenticate(appAddress, keyPair.address);
       res.status.should.equal(200);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
     }
   });
-
 });

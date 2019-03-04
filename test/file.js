@@ -1,35 +1,24 @@
 'use strict';
 
 const assert = require('assert');
-const { user, developer, authUser } = require('../fixtures');
+const { user, buyer } = require('../fixtures');
 const PRS = require('../lib/prs');
-PRS.config({
-  env: 'env',
-  debug: true
-});
-
+const client = new PRS({ env: 'env', debug: true, privateKey: PRS.utility.recoverPrivateKey(user.keystore, user.password), address: user.address });
 
 const fs = require('fs');
 const path = require('path');
 
-let appAddress = null;
 let fileHash = null;
 let fileRId = null;
-let contractRId = null;
 
 let markdownFileUrl = null;
 let markdownFileUrl2 = null;
 let imageFileUrl = null;
 
-let newKeyPair = null;
-
 before(function () {
   const markdownFile = `../${String(Date.now())}.md`;
-  const markdownFile2 = `../${String(Date.now()) + 'new'}.md`;
   markdownFileUrl = path.join(__dirname, markdownFile);
   fs.writeFileSync(markdownFileUrl, String(Date.now()), 'utf-8');
-  markdownFileUrl2 = path.join(__dirname, markdownFile2);
-  fs.writeFileSync(markdownFileUrl2, String(Date.now()) + 'new', 'utf-8');
 
   const imageFile = `../${String(Date.now())}.png`;
   imageFileUrl = path.join(__dirname, imageFile);
@@ -45,34 +34,16 @@ before(function () {
 
 after(function () {
   fs.unlinkSync(markdownFileUrl)
-  fs.unlinkSync(markdownFileUrl2)
   fs.unlinkSync(imageFileUrl);
 });
 
 describe('File', function () {
-  it('sign file by token', async function () {
+  it('sign markdown file', async function () {
     this.timeout(1000 * 200);
     try {
       const stream = fs.createReadStream(markdownFileUrl);
       let data = { stream: stream, filename: 'text.md', title: 'xxx' };
-      let authOpts = { token: authUser.token };
-      const res = await PRS.File.signByStream(data, authOpts);
-      res.status.should.equal(200);
-      fileHash = res.body.cache.msghash;
-      fileRId = res.body.cache.rId;
-    } catch (err) {
-      assert.fail(JSON.stringify(err.response));
-    }
-  });
-
-  it('sign file by privateKey', async function () {
-    this.timeout(1000 * 200);
-    try {
-      const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
-      const stream = fs.createReadStream(markdownFileUrl2);
-      let data = { stream: stream, filename: 'text.md', title: 'xxx' };
-      let authOpts = { privateKey };
-      const res = await PRS.File.signByStream(data, authOpts);
+      const res = await client.file.signByStream(data);
       res.status.should.equal(200);
       fileHash = res.body.cache.msghash;
       fileRId = res.body.cache.rId;
@@ -84,10 +55,9 @@ describe('File', function () {
   it('sign image file', async function () {
     this.timeout(1000 * 200);
     try {
-      let authOpts = { token: authUser.token };
       const stream = fs.createReadStream(imageFileUrl);
       let data = { stream: stream, filename: 'xxx.png', title: 'xxx' };
-      const res = await PRS.File.signByStream(data, authOpts);
+      const res = await client.file.signByStream(data);
       res.status.should.equal(200);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
@@ -96,7 +66,7 @@ describe('File', function () {
 
   it('get file by rId', async function () {
     try {
-      const res = await PRS.File.getByRId(fileRId);
+      const res = await client.file.getByRId(fileRId);
       res.status.should.equal(200);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
@@ -105,27 +75,17 @@ describe('File', function () {
 
   it('get file by msghash', async function () {
     try {
-      const res = await PRS.File.getByMsghash(fileHash);
+      const res = await client.file.getByMsghash(fileHash);
       res.status.should.equal(200);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
     }
   });
 
-  it('reward with comment', async function () {
+  it('reward', async function () {
     try {
-      const privateKey = PRS.utility.recoverPrivateKey(developer.keystore, developer.password);
-      const res = await PRS.File.reward(fileRId, 1, 'hello', { privateKey });
-      res.status.should.equal(200);
-    } catch (err) {
-      assert.fail(JSON.stringify(err.response));
-    }
-  });
-
-  it('reward without comment', async function () {
-    try {
-      const privateKey = PRS.utility.recoverPrivateKey(developer.keystore, developer.password);
-      const res = await PRS.File.reward(fileRId, 1, { privateKey });
+      const buyClient = new PRS({ env: 'env', debug: true, privateKey: PRS.utility.recoverPrivateKey(buyer.keystore, buyer.password), address: buyer.address });
+      const res = await buyClient.file.reward(fileRId, 1, 'hello');
       res.status.should.equal(200);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));

@@ -3,17 +3,13 @@
 const assert = require('assert');
 const { user, developer } = require('../fixtures');
 const PRS = require('../lib/prs');
-PRS.config({
-  env: 'env',
-  debug: true
-});
+const client = new PRS({ env: 'env', debug: true, privateKey: PRS.utility.recoverPrivateKey(user.keystore, user.password), address: user.address });
 
 describe('Finance', function () {
 
   it('get wallet', async function () {
     try {
-      const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
-      const res = await PRS.Finance.getWallet({ privateKey });
+      const res = await client.finance.getWallet();
       should.exist(res.body);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
@@ -22,8 +18,7 @@ describe('Finance', function () {
 
   it('get transactions', async function () {
     try {
-      const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
-      const res = await PRS.Finance.getTransactions({ privateKey });
+      const res = await client.finance.getTransactions();
       should.exist(res.body);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
@@ -32,8 +27,7 @@ describe('Finance', function () {
 
   it('deposit', async function () {
     try {
-      const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
-      const res = await PRS.Finance.deposit(1, { privateKey });
+      const res = await client.finance.deposit(1);
       should.exist(res.body);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
@@ -42,8 +36,7 @@ describe('Finance', function () {
 
   it('withdraw', async function () {
     try {
-      const privateKey = PRS.utility.recoverPrivateKey(user.keystore, user.password);
-      const res = await PRS.Finance.withdraw(1, { privateKey });
+      const res = await client.finance.withdraw(1);
       should.exist(res.body);
     } catch (err) {
       assert.fail(JSON.stringify(err.response));
