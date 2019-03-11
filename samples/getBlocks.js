@@ -1,4 +1,4 @@
-const PRS = require('../lib/prs');
+const PRS = require('prs-lib');
 
 const client = new PRS({ env: 'env', debug: true });
 // 批量获取指定 rId 的区块数据

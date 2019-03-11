@@ -1,4 +1,4 @@
-const PRS = require('../lib/prs');
+const PRS = require('prs-lib');
 
 let demo = async function () {
   try {
