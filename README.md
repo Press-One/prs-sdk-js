@@ -1,6 +1,6 @@
 ## 简介
 
-本 SDK 包含 [prs-utility](https://github.com/Press-One/prs-utility-js) 和 [prs-lib](https://github.com/Press-One/prs-lib-js) 的示例代码。
+本 SDK 包含了 [prs-utility](https://github.com/Press-One/prs-utility-js) 和 [prs-lib](https://github.com/Press-One/prs-lib-js) 的示例代码。
 
 - `prs-utility` 是 PRS 提供的算法工具库，包含项目中需要使用的所有哈希、加密算法。
 - `prs-lib` 是对 PRS REST API 的封装，开发者可以直接调用与 PRS 服务通信。
@@ -22,7 +22,7 @@ node webAuth.js
 1. 开发者前往 PRS 官网注册账号。(正式环境：https://press.one，测试环境：https://beta.press.one)
 2. 登录成功后进入[开发者设置](https://beta.press.one/developer/settings)、[我的 DApp](https://beta.press.one/developer/apps)，完善开发者信息以及创建 DApp。
 3. 在项目中安装 [prs-utility](https://github.com/Press-One/prs-utility-js) 和 [prs-lib](https://github.com/Press-One/prs-lib-js) .
-4. DApp 在适当的时候引导用户进行授权。
+4. DApp 在适当的时候，引导用户跳转到 PRS 提供的 Web 页面进行授权。
 5. 授权成功后能够获取到 access token，拿到 token 之后即可进行签名发布文件、创建合约等操作。
 
 ### 创建 DApp
