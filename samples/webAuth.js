@@ -8,23 +8,17 @@ let demo = async function () {
     const appPrivateKey = '7552f60cdce1859e45e9ba3ec4b677c883a1016187c82415b2ffc45708e69670';
 
     // 根据 appAddress 获得 PRS 提供的授权页面，引导用户跳转到此页面。
+    // 在该页面，用户可以完成授权操作。
     const client1 = new PRS({ env: 'env', debug: true });
     const webAuthorizeUrl = client1.dapp.getAuthorizeUrl(appAddress);
     console.log(webAuthorizeUrl);
 
-    // 模拟用户跳转至授权页面，点击确定授权按钮的操作。
-    // 1. 用户登录 PRS 网站，获取用户私钥。
-    const userPrivateKey = utility.recoverPrivateKey('{"address":"758ea2601697fbd3ba6eb6774ed70b6c4cdb0ef9","crypto":{"cipher":"aes-128-ctr","ciphertext":"92af6f6710eba271eae5ac7fec72c70d9f49215e7880a0c45d4c53e56bd7ea59","cipherparams":{"iv":"13ddf95d970e924c97e4dcd29ba96520"},"mac":"b9d81d78f067334ee922fb2863e32c14cbc46e479eeb0acc11fb31e39256004e","kdf":"pbkdf2","kdfparams":{"c":262144,"dklen":32,"prf":"hmac-sha256","salt":"79f90bb603491573e40a79fe356b88d0c7869852e43c2bbaabed44578a82bbfa"}},"id":"93028e51-a2a4-4514-bc1a-94b089445f35","version":3}', '123123');
-    const userAddress = '758ea2601697fbd3ba6eb6774ed70b6c4cdb0ef9';
-    // 2. 用户点击确认授权按钮。
-    const client2 = new PRS({ env: 'env', debug: true, privateKey: userPrivateKey, address: userAddress });
-    const res = await client2.dapp.webAuthorize(appAddress);
-    const code = res.body.code;
-    const redirectUrl = res.body.redirectUrl;
-    console.log(code);
-    // 3. 用户点击授权操作之后，会跳转到 redirectUrl, 开发者可以获取到 queryString 中的 code。拿到code之后，开发者使用 appPrivateKey 换取 access token。
-    const client3 = new PRS({ env: 'env', debug: true });
-    const authRes = await client3.dapp.authByCode(code, appAddress, appPrivateKey);
+    // 跳转至 webAuthorizeUrl 后，会显示确认授权按钮，如果用户点击确定授权，页面会回调至 `REDIRECT_URL/?code=CODE`，此时就能通过 query string 拿到返回的 code。
+    // 拿到code之后，开发者使用 appPrivateKey 换取 access token。
+    const code = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTI0MDA1MDcsImp0aSI6ImUxOGI4YjQyLWY2YjctNGI4Ny1iMTRhLTJjZmM5MTcwYWViZCIsImRhdGEiOnsidXNlckFkZHJlc3MiOiI3NThlYTI2MDE2OTdmYmQzYmE2ZWI2Nzc0ZWQ3MGI2YzRjZGIwZWY5IiwiYXBwQWRkcmVzcyI6Ijc0ODNmNjk5Mjg0YjU1ZWI1ODViMjI5YzBjY2VlMWY0NmZiODkzYTgiLCJ0eXBlIjoiZW1haWwiLCJhdXRoQWRkcmVzcyI6IjNmYmUzMzJkZmFlNzNmNTM2ZjgwMTQ0ZTc4MDZlNjkxZjk4YTc3ZDEifSwicHJvdmlkZXIiOiJwcmVzc29uZSIsImV4cCI6MTU1MjY1OTcwN30.ERvUkunA_ki8_l9IN-vViAhX5f4BfQyD0nlNUiqTRK0';
+
+    const client2 = new PRS({ env: 'env', debug: true });
+    const authRes = await client2.dapp.authByCode(code, appAddress, appPrivateKey);
     // 4. 获取 token 之后，即授权成功，可以进行签名等操作。
     const authAddress = authRes.body.appAuthentication.authAddress;
     const token = authRes.body.token;
