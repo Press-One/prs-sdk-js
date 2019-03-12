@@ -1,0 +1,11 @@
+curl -X POST https://beta.press.one/api/v2/files  \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTIzNTM4MTMsImp0aSI6IjA4OTIxNjZiLTU3OTYtNDk2Yi04NTU0LTAwZTMxOWNhNGU1OCIsImRhdGEiOnsiYXV0aEFkZHJlc3MiOiIyNGJiODViMmEyZTcyYWY4NDllOGE4M2U5ZjJmY2UxZDdmOWY2Njg1In0sInByb3ZpZGVyIjoiZGFwcCJ9.qa76GKlcOHq-4salLQduPs3EHB3xWmlq7JJymYSAMmo" \
+  -H 'Content-Type: multipart/form-data; charset=utf-8; boundary=__X_PAW_BOUNDARY__' \
+  -F "address=${address}" \
+  -F "signature=${signature}" \
+  -F "title=${title}" \
+  -F "source=${source}" \
+  -F "originUrl=${originUrl}" \
+  -F "category=${category}" \
+  -F "file=${file}"

@@ -1,0 +1,4 @@
+curl -X POST https://beta.press.one/api/v2/contracts  \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTIzNTM4MTMsImp0aSI6IjA4OTIxNjZiLTU3OTYtNDk2Yi04NTU0LTAwZTMxOWNhNGU1OCIsImRhdGEiOnsiYXV0aEFkZHJlc3MiOiIyNGJiODViMmEyZTcyYWY4NDllOGE4M2U5ZjJmY2UxZDdmOWY2Njg1In0sInByb3ZpZGVyIjoiZGFwcCJ9.qa76GKlcOHq-4salLQduPs3EHB3xWmlq7JJymYSAMmo" \
+  -d '{ "payload": { "code": "PRSC Ver 0.1\n    Name 购买授权\n    Desc 这是一个\\n测试合约\n    Receiver 24bb85b2a2e72af849e8a83e9f2fce1d7f9f6685\n    License usage1 CNB:0.001 Terms: 这是个人使用条款，禁止\\n商业应用。\n    License usage2 CNB:0.002 Terms: 这是商业使用条款，允许\\n修改和复制。", "signature": "65fdb2a8d18957e66f5a8f27a78aff0152765872ec308b837c4650d4b8f1b88dca796c15885ac44b1231c51c244561043754a5a7a9e2c3bc5c224ad413a292ea0" } }'

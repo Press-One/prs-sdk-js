@@ -17,8 +17,8 @@ let demo = async function () {
     const transactionsRes = await client.finance.getTransactions({ offset: 0, limit: 1 });
     console.log(transactionsRes.body);
 
-    const depositRes = await client.finance.deposit(1);
-    console.log(depositRes.body);
+    const rechargeRes = await client.finance.recharge(1);
+    console.log(rechargeRes.body);
 
     const withdrawRes = await client.finance.withdraw(1);
     console.log(withdrawRes.body);

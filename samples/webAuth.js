@@ -3,18 +3,17 @@ const PRS = require('prs-lib');
 
 let demo = async function () {
   try {
-    // 在 PRS 创建 DApp 时能够获取到 address 和 privateKey, 详见 https://developer.press.one/docs/0-2-dapp-create 。
-    const appAddress = '创建 DApp 后获得的 app address';
-    const appPrivateKey = '创建 DApp 后获得的 privateKey';
+    // 前往 PRS 网站，创建 DApp，能够得到对应的 address 和 privateKey。
+    const appAddress = '7483f699284b55eb585b229c0ccee1f46fb893a8';
+    const appPrivateKey = '7552f60cdce1859e45e9ba3ec4b677c883a1016187c82415b2ffc45708e69670';
 
-    // 根据 appAddress 获得 PRS 提供的授权页面，在适当的时候引导用户跳转到此页面。
-    // 详见文档: https://developer.press.one/docs/2-1-dapp 。
+    // 根据 appAddress 获得 PRS 提供的授权页面，引导用户跳转到此页面。
     const client1 = new PRS({ env: 'env', debug: true });
     const webAuthorizeUrl = client1.dapp.getAuthorizeUrl(appAddress);
     console.log(webAuthorizeUrl);
 
-    // 此段代码是是模拟用户跳转至授权页面，点击确定授权按钮的操作。
-    // 1. 用户登录 PRS 网站，登录后能够获得用户私钥。
+    // 模拟用户跳转至授权页面，点击确定授权按钮的操作。
+    // 1. 用户登录 PRS 网站，获取用户私钥。
     const userPrivateKey = utility.recoverPrivateKey('{"address":"758ea2601697fbd3ba6eb6774ed70b6c4cdb0ef9","crypto":{"cipher":"aes-128-ctr","ciphertext":"92af6f6710eba271eae5ac7fec72c70d9f49215e7880a0c45d4c53e56bd7ea59","cipherparams":{"iv":"13ddf95d970e924c97e4dcd29ba96520"},"mac":"b9d81d78f067334ee922fb2863e32c14cbc46e479eeb0acc11fb31e39256004e","kdf":"pbkdf2","kdfparams":{"c":262144,"dklen":32,"prf":"hmac-sha256","salt":"79f90bb603491573e40a79fe356b88d0c7869852e43c2bbaabed44578a82bbfa"}},"id":"93028e51-a2a4-4514-bc1a-94b089445f35","version":3}', '123123');
     const userAddress = '758ea2601697fbd3ba6eb6774ed70b6c4cdb0ef9';
     // 2. 用户点击确认授权按钮。
