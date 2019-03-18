@@ -14,8 +14,9 @@ let demo = async function () {
     const markdownFileUrl = path.join(__dirname, './assets/test.md');
     const stream = fs.createReadStream(markdownFileUrl);
     let data = { stream: stream, filename: 'text.md', title: 'xxx' };
+    let meta = { uuid: 'xxxx' };
     // 签名文件
-    const res = await client.file.signByStream(data);
+    const res = await client.file.signByStream(data, meta);
     const fileHash = res.body.cache.msghash;
     const fileRId = res.body.cache.rId;
     console.log(fileRId);
@@ -23,6 +24,11 @@ let demo = async function () {
     // 根据 fileRId 获取文件的区块缓存数据
     const fileRes = await client.file.getByRId(fileRId);
     console.log(fileRes.body);
+
+    const filesRes = await client.file.getFilesByAddress(authAddress);
+    console.log(filesRes.text);
+
+    
     
   } catch (err) {
   }
