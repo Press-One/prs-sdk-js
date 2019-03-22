@@ -3,8 +3,8 @@ const PRS = require('prs-lib');
 let demo = async function () {
   try {
     // 通过 Web 授权获取对应的 authAddress 和 token，可参考 ./samples/webAuth.js。
-    const authAddress = '24bb85b2a2e72af849e8a83e9f2fce1d7f9f6685';
-    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTIzNTE5ODQsImp0aSI6IjUzZWQxOTg1LThhMDktNDM3MC04NzY5LTI3ZjVhODlhNWIwOSIsImRhdGEiOnsiYXV0aEFkZHJlc3MiOiIyNGJiODViMmEyZTcyYWY4NDllOGE4M2U5ZjJmY2UxZDdmOWY2Njg1In0sInByb3ZpZGVyIjoiZGFwcCIsImV4cCI6MTU1MjYxMTE4NH0.-efWwQ6PItcA2rLQ88cIJwglrQh7cNY45nFLh9SyHtY';
+    const authAddress = '586a797ef8ff4362e1671fea36dfa3f431d0722c';
+    const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTMyMTc0NzgsImp0aSI6IjM1ZmFhNTc1LWMwMmUtNGYzMS05ZDZmLTE1Yjg2ZGI0NGZjNyIsImRhdGEiOnsiYXV0aEFkZHJlc3MiOiI1ODZhNzk3ZWY4ZmY0MzYyZTE2NzFmZWEzNmRmYTNmNDMxZDA3MjJjIn0sInByb3ZpZGVyIjoiZGFwcCJ9.1jHFcN41hg0xqGBkbrBEXnGSicq7kRUZqGG-DryVUoM';
 
     // 初始化 client
     const client = new PRS({ env: 'env', debug: true, address: authAddress, token: token });
