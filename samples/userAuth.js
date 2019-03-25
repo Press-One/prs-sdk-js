@@ -65,11 +65,11 @@ async function demo() {
     console.log(bindRes.body);
 
     // 7. 合约绑定之后，其他用户就可以购买合约。
+    const buyerPrivateKey = utility.recoverPrivateKey('{"address":"27d64b3524ef5679c4d7c3493088c70478a700db","crypto":{"cipher":"aes-128-ctr","ciphertext":"100bca558b3fbc5b7c821c896c7afbd1b69967f52c09749814e5d17a3dbddf71","cipherparams":{"iv":"229453d4b39da3c77a62233ae93a5173"},"mac":"31120657efc145c2198223de03d5bc68640204dd1b7d99f8f9c0c2723c843c1c","kdf":"pbkdf2","kdfparams":{"c":262144,"dklen":32,"prf":"hmac-sha256","salt":"ceae264708217faa7420e2b2a8aea8f55f04d96f2956d450c509c1fd823cb417"}},"id":"e52f066d-ee58-4b09-bb50-4de75f703f27","version":3}', 'nopassword');
     const buyerAddress = '27d64b3524ef5679c4d7c3493088c70478a700db';
-    const buyerToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTMyMTcwMzgsImp0aSI6IjQzMzY2ZTFkLTQ4ODQtNDEyZS1hNDkwLWEwYzFiYWZmZmQxYyIsImRhdGEiOnsiYWRkcmVzcyI6IjI3ZDY0YjM1MjRlZjU2NzljNGQ3YzM0OTMwODhjNzA0NzhhNzAwZGIifSwiYXV0aFR5cGUiOiJwaG9uZSIsInByb3ZpZGVyIjoicHJlc3NvbmUiLCJleHAiOjE1NTM0NzYyMzh9.56zuwBenq4Dn2FJt3-8qeqtCdqCEFIs-wFZf5PVV5j8';
 
     // 初始化 client
-    const client3 = new PRS({ env: 'env', debug: true, address: buyerAddress, token: buyerToken });
+    const client3 = new PRS({ env: 'env', debug: true, address: buyerAddress, privateKey: buyerPrivateKey });
 
     const buyRes = client3.contract.createOrder(contractRId, fileRId, 'usage1');
     console.log(buyRes.body);
