@@ -24,9 +24,6 @@ async function appExample () {
     .then(res => res.body)
     .then(data => data.isExist === false)
   if (nameAvailable) {
-    // const createRes = {
-    //   address: 'e6beef7e4ed1dcf62c556d5b9ee4d6f9d3f7b78a'
-    // }
     const createRes = await prs.dapp.create({ ...dapp, name })
       .then(res => res.body)
     console.log(createRes)
