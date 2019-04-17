@@ -19,10 +19,9 @@ async function fileExample () {
   const now = Date.now().toString()
   rStream.push(Buffer.from(now))
   rStream.push(null)
-  
 
   const signStreamRes = await prs.file.signByStream(
-    { 
+    {
       stream: rStream,
       filename: `test stream ${now}.md`, // 目前暂时只支持 markdown 文件和图片
       title: `test title ${now}`
@@ -41,19 +40,19 @@ async function fileExample () {
   console.log(signBufferRes)
 
   const fileByRIdRecord = await prs.file.getByRId(signBufferRes.cache.rId)
-    .then(res => res.body);
+    .then(res => res.body)
   console.log(fileByRIdRecord)
 
   const fileByMsgHashRecord = await prs.file.getByMsghash(signBufferRes.cache.msghash)
-    .then(res => res.body);
+    .then(res => res.body)
   console.log(fileByMsgHashRecord)
 
   const pageOpt = {
     limit: 10,
-    offset:0
+    offset: 0
   }
   const files = await prs.file.getFilesByAddress(address, pageOpt)
-    .then(res => res.body);
+    .then(res => res.body)
   console.log(files)
 
   {
@@ -68,10 +67,10 @@ async function fileExample () {
       env: 'env', debug: true, privateKey, address
     })
     const rewardRes = await prs.file.reward(
-      signBufferRes.cache.rId, 
-      0.001, 
+      signBufferRes.cache.rId,
+      0.001,
       'test reward'
-      ).then(res => res.body);
+    ).then(res => res.body)
     console.log(rewardRes)
   }
 }
