@@ -13,7 +13,7 @@ PRS SDK 是 [prs-utility](https://github.com/Press-One/prs-utility-js) 和 [prs-
 2. 执行示例文件即可，如。
 
 ```bash
-cd samples
+npm i && cd samples
 node app.example.js
 ```
 
