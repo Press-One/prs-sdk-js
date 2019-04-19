@@ -1,4 +1,4 @@
-## 简介
+# PRS SDK 简介
 
 PRS SDK 是 [prs-utility](https://github.com/Press-One/prs-utility-js) 和 [prs-lib](https://github.com/Press-One/prs-lib-js) 的示例代码合集。
 
@@ -8,14 +8,16 @@ PRS SDK 是 [prs-utility](https://github.com/Press-One/prs-utility-js) 和 [prs-
 ## 使用方法及代码示例
 
 在 samples 目录有所有的代码示例，使用方法：
-1. 打开需要执行的某个示例文件，如 userAuth.js，将其中的参数改成你自己的 DApp 参数。
+
+1. 打开需要执行的某个示例文件，如 app.example.js，将其中的参数改成你自己的 DApp 参数。
 2. 执行示例文件即可，如。
-```
-cd samples
-node userAuth.js
+
+```bash
+npm i && cd samples
+node app.example.js
 ```
 
-## 如何开发 DApp?
+## 如何开发 DApp
 
 ### 开发流程
 
@@ -25,7 +27,6 @@ node userAuth.js
 4. DApp 在适当的时候，引导用户跳转到 PRS 提供的 Web 页面进行授权。
 5. 授权成功后能够获取到 access token，拿到 token 之后即可进行签名发布文件、创建合约等操作。
 
-
 ### 创建 DApp
 
 进入[我的 DApp](https://beta.press.one/developer/apps)，填写必要信息（名称、描述、主页 URL、授权回调 URL）即可创建 DApp，创建成功后，能够获取到对应的 privateKey、publicKey、address，用于之后的用户授权。
@@ -33,11 +34,11 @@ node userAuth.js
 - `address`: DApp 在 PRS 系统中的唯一标识。
 - `privateKey`: 创建 DApp 时生成的私钥，用户通过 Web 授权时，开发者需要通过 privateKey 换取 token。
 
-
 ### 安装
 
 通过 npm 安装:
-```
+
+```bash
 npm install prs-utility --save
 npm install prs-lib --save
 ```
@@ -113,12 +114,9 @@ npm install prs-lib --save
 
 REST API 和 SDK 的具体使用方法，请参考[开发文档](https://developer.press.one)
 
-
 ## PRS 社区
 
 - [Twitter](https://twitter.com/PRESSoneHQ)
 - [微信公众号](https://mp.weixin.qq.com/s/C7yPdlEP5OVhbfWLtOBGTQ)
 - [开发者论坛](https://bbs.onedev.club)
 - [Medium](https://medium.com/@pressone/)
-
-
