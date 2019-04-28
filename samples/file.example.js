@@ -1,6 +1,6 @@
 const PRS = require('prs-lib')
 const prsUtils = require('prs-utility')
-const { Writable, Readable } = require('stream')
+const { Readable } = require('stream')
 const testConfig = require('../fixtures')
 
 async function fileExample () {
@@ -47,12 +47,10 @@ async function fileExample () {
     .then(res => res.body)
   console.log(fileByMsgHashRecord)
 
-  const pageOpt = {
+  const files = await prs.file.getFeeds(address, {
     limit: 10,
     offset: 0
-  }
-  const files = await prs.file.getFilesByAddress(address, pageOpt)
-    .then(res => res.body)
+  }).then(res => res.body)
   console.log(files)
 
   {
@@ -69,7 +67,9 @@ async function fileExample () {
     const rewardRes = await prs.file.reward(
       signBufferRes.cache.rId,
       0.001,
-      'test reward'
+      {
+        comment: 'test reward'
+      }
     ).then(res => res.body)
     console.log(rewardRes)
   }

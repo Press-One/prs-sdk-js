@@ -37,6 +37,7 @@ async function orderExample () {
 
   // 绑定该合约
   const bindRes = await prs.contract.bind(contractRId, fileRId, address)
+  console.log(bindRes.body)
 
   // 其他用户就可以购买合约。
   {

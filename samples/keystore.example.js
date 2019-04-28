@@ -1,5 +1,4 @@
 const PRS = require('prs-lib')
-const prsUtils = require('prs-utility')
 const testConfig = require('../fixtures')
 
 async function keystoreExample () {

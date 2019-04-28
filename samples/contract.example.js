@@ -41,7 +41,9 @@ async function contractExample () {
   const fileRId = signBufferRes.cache.rId
 
   // 绑定该合约
-  const bindRes = await prs.contract.bind(contractRId, fileRId, address)
+  const bindRes = await prs.contract.bind({
+    contractRId, fileRId, beneficiaryAddress: address
+  })
   console.log(bindRes.body)
 
   // 查询合约
