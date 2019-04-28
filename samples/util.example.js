@@ -4,7 +4,6 @@ const { Readable } = require('stream')
 const testConfig = require('../fixtures')
 
 async function utilExample () {
-
   {
     // dapp 通过被用户授权的 token 进行签名
     const token = await getToken()
@@ -13,7 +12,7 @@ async function utilExample () {
     const dataSig = await PRS.util.signByToken(data, token, new PRS({ env: 'env', debug: true }).config.getHost()).then(res => res.body)
     console.log(dataSig)
   }
-    
+
   {
     // 对 Readable Stream 进行 hash 运算
     const rStream = new Readable()
@@ -23,7 +22,7 @@ async function utilExample () {
     const rStreamHash = await PRS.util.hashByReadableStream(rStream)
     console.log(rStreamHash)
   }
-  
+
   {
     // 计算 email 和 password 的 hash
     const passHash = PRS.util.hashByPassword(testConfig.developer.email, testConfig.developer.password)
@@ -43,14 +42,12 @@ async function utilExample () {
     console.log(reqSig)
   }
 
-  
   {
     // 得到 http 请求的 header 部分
     const privateKey = prsUtils.recoverPrivateKey(testConfig.developer.keystore, testConfig.developer.password)
     const authHeader = PRS.util.getAuthHeader('/test', {}, privateKey)
     console.log(authHeader)
   }
-  
 
   async function getToken () {
     const keystore = testConfig.developer.keystore

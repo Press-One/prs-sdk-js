@@ -6,7 +6,7 @@ async function blockExample () {
 
   const withDetail = true
   // 批量获取指定 rId 的区块数据
-  const res = await client.block.getByRIds(blockIds, withDetail)
+  const res = await client.block.getByRIds(blockIds, { withDetail })
   console.log(res.body)
 }
 
