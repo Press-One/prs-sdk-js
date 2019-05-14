@@ -1,3 +1,7 @@
+// 以下是一个综合实例
+// 演示了一个 dapp 如何获取用户授权，然后代表用户进行文件签名、合约绑定操作
+// 接着模拟另一个用户对合约进行购买
+
 const utility = require('prs-utility')
 const PRS = require('prs-lib')
 
@@ -84,7 +88,7 @@ async function mockWebAuthorize (appAddress) {
     const client = new PRS({ env: 'env', debug: true, privateKey: userPrivateKey, address: userAddress })
     const res = await client.dapp.webAuthorize(appAddress)
     const code = res.body.code
-    const redirectUrl = res.body.redirectUrl
+    // const redirectUrl = res.body.redirectUrl
     return code
   } catch (err) {
     console.log(err)

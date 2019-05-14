@@ -1,3 +1,5 @@
+// 用例演示了如何通过 block id 获取 block 数据
+
 const PRS = require('prs-lib')
 
 async function blockExample () {

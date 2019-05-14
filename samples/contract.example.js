@@ -1,3 +1,9 @@
+// 以下用例演示了
+// - 如何获取合约模版
+// - 如何创建合约
+// - 如何绑定合约
+// - 如何查询合约
+
 const PRS = require('prs-lib')
 const prsUtils = require('prs-utility')
 const testConfig = require('../fixtures')

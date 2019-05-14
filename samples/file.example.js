@@ -1,3 +1,10 @@
+// 以下实例主要演示了文件的相关操作
+// - 根据签名文件流
+// - 签名 buffer
+// - 获取文件（根据 hash 和 块id）
+// - 获取 feeds
+// - 打赏文件
+
 const PRS = require('prs-lib')
 const prsUtils = require('prs-utility')
 const { Readable } = require('stream')

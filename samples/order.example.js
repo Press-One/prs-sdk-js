@@ -1,3 +1,6 @@
+// 以下代码演示了订单相关 api
+// 主要包括 购买合约和查询订单
+
 const PRS = require('prs-lib')
 const prsUtils = require('prs-utility')
 const testConfig = require('../fixtures')

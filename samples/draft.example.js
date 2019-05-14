@@ -1,3 +1,9 @@
+// 以下实例演示了草稿的基本操作
+// - 创建草稿
+// - 更新草稿
+// - 获取草稿
+// - 删除草稿
+
 const PRS = require('prs-lib')
 const prsUtils = require('prs-utility')
 const testConfig = require('../fixtures')

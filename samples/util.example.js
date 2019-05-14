@@ -1,3 +1,7 @@
+// 以下代码演示了 util 的用法
+// 包括
+// - 本地签名（文件、文本、对象、密码、http 请求）
+
 const PRS = require('prs-lib')
 const prsUtils = require('prs-utility')
 const { Readable } = require('stream')
