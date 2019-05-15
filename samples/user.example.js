@@ -1,3 +1,9 @@
+// 以下代码展示了 user 的相关用法
+// 包括
+// - 获取用户信息
+// - 修改用户信息
+// - 上传头像
+
 const PRS = require('prs-lib')
 const prsUtils = require('prs-utility')
 const testConfig = require('../fixtures')

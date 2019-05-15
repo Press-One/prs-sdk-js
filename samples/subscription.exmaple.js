@@ -1,3 +1,10 @@
+// 以下代码演示了订阅相关的代码
+// 包括：
+// - 获取订阅
+// - 获取推荐
+// - 订阅
+// - 取消订阅
+
 const PRS = require('prs-lib')
 const prsUtils = require('prs-utility')
 const testConfig = require('../fixtures')

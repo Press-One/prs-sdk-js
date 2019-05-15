@@ -1,3 +1,8 @@
+// 以下代码主要演示了钱包的相关操作
+// - 获取钱包
+// - 获取交易记录
+// - 充值和体现
+
 const PRS = require('prs-lib')
 const prsUtils = require('prs-utility')
 const testConfig = require('../fixtures')

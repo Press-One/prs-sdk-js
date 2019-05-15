@@ -1,3 +1,11 @@
+// 用例演示了以下步骤：
+// - 用户创建 dapp
+// - 用户自己向刚刚创建的 dapp 授权，获取 code（dapp 可以利用 code 换取 token， 有了 token， dapp 就可以代表用户身份进行操作），实际开发中通常由 dapp 引导用户访问授权页面，然后以重定向回调的形式返回 code。
+// - 使用 dapp 身份以及用户的授权 code 获取 token
+// - 用户给自己的 dapp 修改信息
+// - 用户解除自己对 dapp 的授权
+// - 用户删除刚创建的 dapp
+
 const PRS = require('prs-lib')
 const prsUtils = require('prs-utility')
 const testConfig = require('../fixtures')
